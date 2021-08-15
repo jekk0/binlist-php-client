@@ -59,9 +59,6 @@ $value = $result->getCountry()->getEmoji(); // 🇩🇰
 $value = $result->getCountry()->getLatitude(); // 56
 $value = $result->getCountry()->getLongitude(); // 10
 
-// Fields may contain null values which suggests that cards may be one or the other.
-// If no matching cards are found an HTTP 404 response is returned.
-
 ```
 
 ### Documentations

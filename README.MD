@@ -1,5 +1,4 @@
 # The composer php client for interact with binlist.net api.
-https://travis-ci.com/jekk0/binlist-php-client.svg?branch=master
 
 [![Build Status](https://travis-ci.com/jekk0/binlist-php-client.svg?branch=master)](https://travis-ci.com/github/jekk0/binlist-php-client)
 [![Coverage Status](https://codecov.io/gh/jekk0/binlist-php-client/branch/master/graphs/badge.svg)](https://app.codecov.io/gh/jekk0/binlist-php-client)

@@ -1,4 +1,4 @@
-# The composer php client for interact with binlist.net api. (IN DEVELOPMENT)
+# The composer php client for interact with binlist.net api.
 
 ### Requirements
 - php >= 8.0
@@ -66,4 +66,3 @@ $value = $result->getCountry()->getLongitude(); // 10
 
 ### Documentations
 * https://binlist.net/
-

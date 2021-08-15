@@ -10,6 +10,10 @@ use Jekk0\Binlist\Client\ValueObject\Result;
 
 class ResultValueObjectBuilder implements ResultBuilderInterface
 {
+    private const CAST_TO_BOOL = 0;
+    private const CAST_TO_INT = 1;
+    private const CAST_TO_STRING = 2;
+
     private const DATA_DEFAULT = [
         'number' => [
             'length' => null,
@@ -46,45 +50,70 @@ class ResultValueObjectBuilder implements ResultBuilderInterface
             $this->buildCard($data),
             $this->buildBank($data),
             $this->buildCountry($data)
-        ); 
+        );
     }
-    
+
     private function buildCard(array $data): Card
     {
         $cardNumber = new CardNumber(
-            length: (int)$data['number']['length'],
-            luhn: (bool)$data['number']['luhn']
+            length: $this->getValue($data, ['number', 'length'], self::CAST_TO_INT),
+            luhn: $this->getValue($data, ['number', 'luhn'], self::CAST_TO_BOOL)
         );
 
         return new Card(
             number: $cardNumber,
-            scheme: (string)$data['scheme'],
-            type: (string)$data['type'],
-            brand: (string)$data['brand'],
-            prepaid: (string)$data['prepaid'],
+            scheme: $this->getValue($data, ['scheme'], self::CAST_TO_STRING),
+            type: $this->getValue($data, ['type'], self::CAST_TO_STRING),
+            brand: $this->getValue($data, ['brand'], self::CAST_TO_STRING),
+            prepaid: $this->getValue($data, ['prepaid'], self::CAST_TO_STRING),
         );
     }
 
     private function buildBank(array $data): Bank
     {
         return new Bank(
-            name: (string)$data['bank']['name'],
-            url: (string)$data['bank']['url'],
-            phone: (string)$data['bank']['phone'],
-            city: (string)$data['bank']['city'],
+            name: $this->getValue($data, ['bank', 'name'], self::CAST_TO_STRING),
+            url: $this->getValue($data, ['bank', 'url'], self::CAST_TO_STRING),
+            phone: $this->getValue($data, ['bank', 'phone'], self::CAST_TO_STRING),
+            city: $this->getValue($data, ['bank', 'city'], self::CAST_TO_STRING),
         );
     }
 
     private function buildCountry(array $data): Country
     {
         return new Country(
-            numeric: (string)$data['country']['numeric'],
-            alpha2: (string)$data['country']['alpha2'],
-            name: (string)$data['country']['name'],
-            emoji: (string)$data['country']['emoji'],
-            currency: (string)$data['country']['currency'],
-            latitude: (string)$data['country']['latitude'],
-            longitude: (string)$data['country']['longitude'],
+            numeric: $this->getValue($data, ['country', 'numeric'], self::CAST_TO_INT),
+            alpha2: $this->getValue($data,['country', 'alpha2'], self::CAST_TO_STRING),
+            name: $this->getValue($data,['country', 'name'], self::CAST_TO_STRING),
+            emoji: $this->getValue($data,['country','emoji'], self::CAST_TO_STRING),
+            currency: $this->getValue($data,['country', 'currency'], self::CAST_TO_STRING),
+            latitude: $this->getValue($data, ['country', 'latitude'], self::CAST_TO_INT),
+            longitude: $this->getValue($data, ['country', 'longitude'], self::CAST_TO_INT),
         );
+    }
+
+    private function getValue(array $data, array $keys, int $castTo): mixed
+    {
+        foreach ($keys as $key) {
+            if (is_array($data) && !array_key_exists($key, $data)) {
+                return null;
+            }
+
+            if (!is_array($data)) {
+                return null;
+            }
+
+            $data = $data[$key];
+        }
+
+        if ($data === null) {
+            return null;
+        }
+
+        return match ($castTo) {
+            self::CAST_TO_BOOL => (bool)$data,
+            self::CAST_TO_INT => (int)$data,
+            self::CAST_TO_STRING => (string)$data,
+        };
     }
 }

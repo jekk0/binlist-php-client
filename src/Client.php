@@ -18,17 +18,10 @@ class Client implements ClientInterface
     private GuzzleClient $client;
     private ResultBuilderInterface $resultBuilder;
 
-    public function __construct(
-        ?GuzzleClient $client = null,
-        ?ResultBuilderInterface $resultBuilder = null
-    ) {
-        if ($client === null) {
-            $this->client = $this->createClient();
-        }
-
-        if ($resultBuilder === null) {
-            $this->resultBuilder = new ResultValueObjectBuilder();
-        }
+    public function __construct(?GuzzleClient $client = null)
+    {
+        $this->client = $client === null ? $this->createClient() : $client;
+        $this->resultBuilder = new ResultValueObjectBuilder();
     }
 
     public function get(string $bin): Result

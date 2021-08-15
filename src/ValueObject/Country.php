@@ -4,7 +4,7 @@ namespace Jekk0\Binlist\Client\ValueObject;
 class Country
 {
     public function __construct(
-        private ?string $numeric,
+        private ?int $numeric,
         private ?string $alpha2,
         private ?string $name,
         private ?string $emoji,
@@ -13,7 +13,7 @@ class Country
         private ?int $longitude,
     ){}
 
-    public function getNumeric(): ?string
+    public function getNumeric(): ?int
     {
         return $this->numeric;
     }
